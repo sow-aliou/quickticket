@@ -60,11 +60,11 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
-  const handleEventSave = (saved, isNew) => {
+  const handleEventSave = () => {
     fetchData(); // Plus simple de tout recharger pour les stats
   };
 
-  const handleVenueSave = (saved, isNew) => {
+  const handleVenueSave = () => {
     fetchData();
   };
 
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
     try {
       await api.post('/settings/batch', { settings });
       toast.success('Paramètres enregistrés avec succès');
-    } catch (err) {
+    } catch {
       toast.error('Erreur lors de l\'enregistrement des paramètres');
     } finally {
       setSavingSettings(false);
@@ -262,7 +262,16 @@ const AdminDashboard = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {events.slice(0, 5).map(event => (
                     <div key={event.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-md)' }}>
-                      <img src={getImageUrl(event.image_url)} alt={event.titre} style={{ width: '50px', height: '40px', objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} />
+                      <img 
+                        src={getImageUrl(event.image_url)} 
+                        alt="" 
+                        onError={(e) => {
+                          e.target.src = '/logos/quickticket-logo.png';
+                          e.target.style.objectFit = 'contain';
+                          e.target.style.padding = '2px';
+                        }}
+                        style={{ width: '50px', height: '40px', objectFit: 'cover', borderRadius: '6px', flexShrink: 0, background: 'rgba(255,255,255,0.05)' }} 
+                      />
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontWeight: '500', fontSize: '0.95rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.titre}</div>
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{new Date(event.date).toLocaleDateString('fr-FR')} — {event.lieu?.nom}</div>
@@ -327,8 +336,13 @@ const AdminDashboard = () => {
                           <td style={{ padding: '0.75rem 0.5rem' }}>
                             <img
                               src={getImageUrl(event.image_url)}
-                              alt={event.titre}
-                              style={{ width: '64px', height: '48px', objectFit: 'cover', borderRadius: '6px', display: 'block' }}
+                              alt=""
+                              onError={(e) => {
+                                e.target.src = '/logos/quickticket-logo.png';
+                                e.target.style.objectFit = 'contain';
+                                e.target.style.padding = '4px';
+                              }}
+                              style={{ width: '64px', height: '48px', objectFit: 'cover', borderRadius: '6px', display: 'block', background: 'rgba(255,255,255,0.05)' }}
                             />
                           </td>
                           <td style={{ padding: '1rem 0.5rem', fontWeight: '500' }}>{event.titre}</td>

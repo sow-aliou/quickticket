@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Calendar, Ticket, ArrowRight, Filter, SlidersHorizontal, AlertCircle } from 'lucide-react';
+import { Search, MapPin, Calendar } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import api from '../api';
 import { getImageUrl } from '../utils/imageUrl';
 
 const formatDate = (dateString) => {
-  const options = { day: '2-digit', month: 'short' };
   const date = new Date(dateString);
   const day = date.toLocaleDateString('fr-FR', { day: '2-digit' });
   const month = date.toLocaleDateString('fr-FR', { month: 'short' });
@@ -155,7 +154,16 @@ const Catalog = () => {
             return (
               <div key={event.id} className={`glass-panel event-card animate-fade-in`} style={{ animationDelay: `${0.1 * (index + 2)}s` }}>
                 <div className="event-image-container">
-                  <img src={getImageUrl(event.image_url)} alt={event.titre} className="event-image" />
+                  <img 
+                    src={getImageUrl(event.image_url)} 
+                    alt="" 
+                    onError={(e) => {
+                      e.target.src = '/logos/quickticket-logo.png';
+                      e.target.style.objectFit = 'contain';
+                      e.target.style.padding = '2rem';
+                    }}
+                    className="event-image" 
+                  />
                   <div className="event-date-badge">
                     <span className="day">{day}</span>
                     <span className="month">{month}</span>
@@ -174,7 +182,7 @@ const Catalog = () => {
                   <div className="event-footer">
                     <div className="event-price">
                       <span>à partir de </span>
-                      {event.prix_min.toLocaleString()} FCFA
+                      {event.prix_min ? event.prix_min.toLocaleString() : '0'} FCFA
                     </div>
                     <Link to={`/evenement/${event.id}`} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
                       Réserver

@@ -42,8 +42,17 @@ const Cart = () => {
               alignItems: 'center',
               flexWrap: 'wrap'
             }}>
-              <div style={{ width: '100px', height: '100px', borderRadius: 'var(--radius-md)', overflow: 'hidden', flexShrink: 0 }}>
-                <img src={getImageUrl(item.image_url)} alt={item.eventTitle} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div style={{ width: '100px', height: '100px', borderRadius: 'var(--radius-md)', overflow: 'hidden', flexShrink: 0, background: 'rgba(255,255,255,0.05)' }}>
+                <img 
+                  src={getImageUrl(item.image_url)} 
+                  alt="" 
+                  onError={(e) => {
+                    e.target.src = '/logos/quickticket-logo.png';
+                    e.target.style.objectFit = 'contain';
+                    e.target.style.padding = '0.5rem';
+                  }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
               </div>
               
               <div style={{ flex: '1', minWidth: '200px' }}>

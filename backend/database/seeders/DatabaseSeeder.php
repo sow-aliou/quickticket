@@ -54,6 +54,24 @@ class DatabaseSeeder extends Seeder
                 'ville' => 'Dakar',
                 'capacite' => 50000,
             ],
+            [
+                'nom' => 'CICES',
+                'adresse' => 'Foire',
+                'ville' => 'Dakar',
+                'capacite' => 10000,
+            ],
+            [
+                'nom' => 'Musée des Civilisations Noires',
+                'adresse' => 'Plateau',
+                'ville' => 'Dakar',
+                'capacite' => 2000,
+            ],
+            [
+                'nom' => 'Canal Olympia Teranga',
+                'adresse' => 'Plateau',
+                'ville' => 'Dakar',
+                'capacite' => 4500,
+            ],
         ];
 
         foreach ($lieux as $l) {
@@ -63,6 +81,10 @@ class DatabaseSeeder extends Seeder
         // 3. Create Events
         $lieu1 = Lieu::where('nom', 'Grand Théâtre National')->first();
         $lieu2 = Lieu::where('nom', 'Monument de la Renaissance')->first();
+        $lieu3 = Lieu::where('nom', 'Stade Abdoulaye Wade')->first();
+        $lieu4 = Lieu::where('nom', 'CICES')->first();
+        $lieu5 = Lieu::where('nom', 'Musée des Civilisations Noires')->first();
+        $lieu6 = Lieu::where('nom', 'Canal Olympia Teranga')->first();
 
         $events = [
             [
@@ -79,6 +101,48 @@ class DatabaseSeeder extends Seeder
                 'date' => now()->addDays(45),
                 'image_url' => 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&q=80',
             ],
+            [
+                'lieu_id' => $lieu3->id,
+                'titre' => 'Grand Combat: Modou Lô vs Balla Gaye 2',
+                'description' => 'Le choc tant attendu de la lutte sénégalaise avec frappe. Venez vibrer au rythme du lamb dans le majestueux Stade Abdoulaye Wade.',
+                'date' => now()->addDays(60),
+                'image_url' => 'https://images.unsplash.com/photo-1552072092-7f9b8d63d499?auto=format&fit=crop&q=80', // Wrestling/Sports vibe
+            ],
+            [
+                'lieu_id' => $lieu6->id,
+                'titre' => 'Youssou N\'Dour - Le Grand Bal',
+                'description' => 'Le roi du Mbalakh de retour pour un spectacle inoubliable mêlant rythme, tradition et messages engagés.',
+                'date' => now()->addDays(15),
+                'image_url' => 'https://images.unsplash.com/photo-1540039155732-d672d423b06c?auto=format&fit=crop&q=80', // Concert vibe
+            ],
+            [
+                'lieu_id' => $lieu1->id,
+                'titre' => 'Dakar Comedy Show',
+                'description' => 'Les meilleurs humoristes du Sénégal et d\'Afrique réunis pour la première fois pour une nuit riche en fous rires.',
+                'date' => now()->addDays(10),
+                'image_url' => 'https://images.unsplash.com/photo-1585699324551-f6c309eedeca?auto=format&fit=crop&q=80', // Standup vibe
+            ],
+            [
+                'lieu_id' => $lieu5->id,
+                'titre' => 'Exposition d\'Art Contemporain Panafricain',
+                'description' => 'Découvrez les œuvres magistrales de sculpteurs et peintres venus des quatre coins du continent noir.',
+                'date' => now()->addDays(5),
+                'image_url' => 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80', // Art expo vibe
+            ],
+            [
+                'lieu_id' => $lieu4->id,
+                'titre' => 'Foire Internationale de Dakar (FIDAK)',
+                'description' => 'Le grand rendez-vous commercial annuel. Artisans, entreprises et commerçants partagent leurs innovations.',
+                'date' => now()->addDays(20),
+                'image_url' => 'https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?auto=format&fit=crop&q=80', // Expo/Fair vibe
+            ],
+            [
+                'lieu_id' => $lieu2->id,
+                'titre' => 'Galsen Hip Hop Festival',
+                'description' => 'Les légendes du rap Galsen (Dip, NitDoff, Nix) enflamment le Monument de la Renaissance.',
+                'date' => now()->addDays(12),
+                'image_url' => 'https://images.unsplash.com/photo-1520166946654-e0c1f60100fe?auto=format&fit=crop&q=80', // Hip hop vibe
+            ]
         ];
 
         foreach ($events as $e) {

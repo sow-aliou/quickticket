@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link, useLocation } from 'react-router-dom';
 
-import { Calendar, MapPin, ArrowLeft, Plus, Minus } from 'lucide-react';
+import { Calendar, MapPin, ArrowLeft, Plus, Minus, Info } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
@@ -30,8 +30,8 @@ const EventDetails = () => {
         const response = await api.get(`/evenements/${id}`);
         // Normaliser les noms de variables attendus par la vue s'il le faut
         const data = response.data;
-        // On s'assure que "categories" existe (Laravel renvoie "categories_billets")
-        data.categories = data.categories_billets || []; 
+        // On s'assure que "categories" existe (Laravel renvoie "categories_billets" ou "categoriesBillets")
+        data.categories = data.categories_billets || data.categoriesBillets || []; 
         setEvent(data);
       } catch (error) {
         console.error("Erreur de récupération des détails :", error);
@@ -100,7 +100,16 @@ const EventDetails = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
         {/* Banner */}
         <div className="glass-panel animate-fade-in" style={{ padding: '0', overflow: 'hidden', height: '400px', position: 'relative' }}>
-          <img src={getImageUrl(event.image_url)} alt={event.titre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img 
+            src={getImageUrl(event.image_url)} 
+            alt="" 
+            onError={(e) => {
+              e.target.src = '/logos/quickticket-logo.png';
+              e.target.style.objectFit = 'contain';
+              e.target.style.padding = '4rem';
+            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+          />
           <div style={{ position: 'absolute', inset: '0', background: 'linear-gradient(to top, rgba(10,10,15,1), transparent)' }}></div>
           <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', right: '2rem' }}>
             <span className="event-category" style={{ background: 'var(--accent-primary)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', color: 'white', display: 'inline-block', marginBottom: '1rem' }}>Concert</span>
@@ -136,8 +145,10 @@ const EventDetails = () => {
                   </div>
                   <div>
                     <h4 style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Lieu</h4>
-                    <p className="text-secondary">{event.lieu.nom}</p>
-                    <p className="text-secondary" style={{ fontSize: '0.9rem' }}>{event.lieu.adresse}, {event.lieu.ville}</p>
+                    <p className="text-secondary">{event.lieu?.nom || 'Lieu à confirmer'}</p>
+                    <p className="text-secondary" style={{ fontSize: '0.9rem' }}>
+                      {event.lieu?.adresse || 'Adresse à confirmer'}{event.lieu?.ville ? `, ${event.lieu.ville}` : ''}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -164,7 +175,7 @@ const EventDetails = () => {
                     </p>
                   </div>
                   <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--text-primary)' }}>
-                    {category.prix.toLocaleString()} FCFA
+                    {category.prix != null ? category.prix.toLocaleString() : '0'} FCFA
                   </div>
                 </div>
                 

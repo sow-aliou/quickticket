@@ -8,9 +8,11 @@ const BACKEND_URL = 'http://localhost:8000';
  * - Si aucune image n'est disponible, une image placeholder générique est retournée.
  */
 export const getImageUrl = (imageUrl) => {
-  if (!imageUrl) {
-    // Image placeholder par défaut si aucune image n'est définie
-    return 'https://placehold.co/600x400/1a1a2e/7c3aed?text=QuickTicket';
+  // On définit le logo par défaut comme constante
+  const DEFAULT_LOGO = '/logos/quickticket-logo.png';
+
+  if (!imageUrl || imageUrl === '' || imageUrl === 'null') {
+    return DEFAULT_LOGO;
   }
   if (imageUrl.startsWith('/storage/')) {
     // Image stockée localement sur le serveur Laravel

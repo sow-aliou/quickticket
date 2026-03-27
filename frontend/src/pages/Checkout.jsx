@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Phone, CheckCircle, Smartphone, AlertCircle, Loader2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Smartphone, AlertCircle, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import api from '../api';
 
@@ -34,7 +34,6 @@ const Checkout = () => {
 
   const [selectedMethod, setSelectedMethod] = useState('wave');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState('form'); // 'form', 'validating', 'success'
   const [error, setError] = useState(null);
 
@@ -50,7 +49,6 @@ const Checkout = () => {
       return;
     }
 
-    setIsProcessing(true);
     setError(null);
     setStep('validating');
 
@@ -68,14 +66,12 @@ const Checkout = () => {
           }))
         });
 
-        setIsProcessing(false);
         setStep('success');
         clearCart();
       } catch (err) {
         console.error("Erreur commande:", err);
         setError("Une erreur est survenue lors de la validation. Veuillez réessayer.");
         setStep('form');
-        setIsProcessing(false);
       }
     }, 4000); // 4 secondes pour simuler la validation sur téléphone
   };

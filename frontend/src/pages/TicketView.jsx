@@ -31,7 +31,7 @@ const TicketView = () => {
         // On récupère la commande spécifique
         const response = await api.get(`/commandes/${id}`);
         setOrder(response.data.data || response.data);
-      } catch (err) {
+      } catch {
         setError("Impossible de charger les billets. Ils n'existent peut-être plus ou vous n'y avez pas accès.");
       } finally {
         setLoading(false);

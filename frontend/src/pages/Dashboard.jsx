@@ -106,8 +106,13 @@ const Dashboard = () => {
                 <div style={{ width: '100%', maxWidth: '300px', position: 'relative', minHeight: '200px' }}>
                   <img 
                     src={getImageUrl(order.evenement?.image_url)} 
-                    alt={order.evenement?.titre} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    alt="" 
+                    onError={(e) => {
+                      e.target.src = '/logos/quickticket-logo.png';
+                      e.target.style.objectFit = 'contain';
+                      e.target.style.padding = '2rem';
+                    }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', background: 'rgba(255,255,255,0.03)' }}
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent, var(--bg-secondary))' }}></div>
                   <div style={{ position: 'absolute', top: '1rem', left: '1rem' }}>

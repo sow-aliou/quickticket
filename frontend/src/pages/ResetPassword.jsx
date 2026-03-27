@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Lock, ArrowLeft, CheckCircle } from 'lucide-react';
 import api from '../api';
 
 const ResetPassword = () => {
-  const { token } = useParams();
   const [searchParams] = useSearchParams();
-  const email = searchParams.get('email') || '';
+  const initialEmail = searchParams.get('email') || '';
+  const initialCode = searchParams.get('code') || '';
   
+  const [email, setEmail] = useState(initialEmail);
+  const [code, setCode] = useState(initialCode);
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [message, setMessage] = useState('');
@@ -25,7 +27,7 @@ const ResetPassword = () => {
 
     try {
       const response = await api.post('/reset-password', {
-        token,
+        code,
         email,
         password,
         password_confirmation: passwordConfirmation
@@ -69,9 +71,9 @@ const ResetPassword = () => {
             <Link to="/login" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem', textDecoration: 'none' }}>
               <ArrowLeft size={16} /> Retour à la connexion
             </Link>
-            <h1 className="heading-1" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Nouveau mot de passe</h1>
+            <h1 className="heading-1" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Réinitialisation</h1>
             <p className="text-secondary" style={{ marginBottom: '2rem' }}>
-              Choisissez un nouveau mot de passe sécurisé pour votre compte <strong>{email}</strong>.
+              Entrez le code reçu par email et votre nouveau mot de passe.
             </p>
 
             {error && (
@@ -80,13 +82,50 @@ const ResetPassword = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Adresse Email
+                </label>
+                <input 
+                  type="email" 
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="votre@email.com"
+                  style={{ 
+                    width: '100%', padding: '0.8rem 1rem', background: 'rgba(0, 0, 0, 0.2)', 
+                    border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)',
+                    color: 'white', outline: 'none'
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  Code de réinitialisation (6 chiffres)
+                </label>
+                <input 
+                  type="text" 
+                  required
+                  maxLength="6"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  placeholder="000000"
+                  style={{ 
+                    width: '100%', padding: '0.8rem 1rem', background: 'rgba(0, 0, 0, 0.2)', 
+                    border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)',
+                    color: 'white', outline: 'none', letterSpacing: '0.5rem', textAlign: 'center', fontWeight: 'bold'
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                   Nouveau mot de passe
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <Lock size={20} className="text-muted" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                  <Lock size={18} className="text-muted" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
                   <input 
                     type="password" 
                     required
@@ -94,7 +133,7 @@ const ResetPassword = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     style={{ 
-                      width: '100%', padding: '1rem 1rem 1rem 3rem', background: 'rgba(0, 0, 0, 0.2)', 
+                      width: '100%', padding: '0.8rem 1rem 0.8rem 2.8rem', background: 'rgba(0, 0, 0, 0.2)', 
                       border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)',
                       color: 'white', outline: 'none'
                     }}
@@ -103,11 +142,11 @@ const ResetPassword = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                   Confirmer le mot de passe
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <Lock size={20} className="text-muted" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                  <Lock size={18} className="text-muted" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
                   <input 
                     type="password" 
                     required
@@ -115,7 +154,7 @@ const ResetPassword = () => {
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
                     placeholder="••••••••"
                     style={{ 
-                      width: '100%', padding: '1rem 1rem 1rem 3rem', background: 'rgba(0, 0, 0, 0.2)', 
+                      width: '100%', padding: '0.8rem 1rem 0.8rem 2.8rem', background: 'rgba(0, 0, 0, 0.2)', 
                       border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)',
                       color: 'white', outline: 'none'
                     }}
@@ -126,7 +165,7 @@ const ResetPassword = () => {
               <button 
                 type="submit" 
                 className="btn-primary" 
-                style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'center' }}
+                style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}
                 disabled={loading}
               >
                 {loading ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}

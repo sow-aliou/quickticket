@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react';
 
-const DeleteConfirm = ({ item, type, onCancel, onConfirm, loading }) => (
+const DeleteConfirm = ({ item, onCancel, onConfirm, loading }) => (
   <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1200, padding: '1rem' }}>
     <div className="glass-panel animate-fade-in" style={{ padding: '2rem', width: '100%', maxWidth: '420px', textAlign: 'center' }}>
       <AlertTriangle size={48} style={{ color: '#f59e0b', margin: '0 auto 1rem' }} />

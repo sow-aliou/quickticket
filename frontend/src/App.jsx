@@ -49,10 +49,11 @@ const AppContent = () => {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Catalog />} />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/evenement/:id" element={<EventDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Protected routes – must be authenticated */}
           <Route path="/panier" element={<PrivateRoute><Cart /></PrivateRoute>} />

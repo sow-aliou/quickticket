@@ -19,8 +19,8 @@ const ForgotPassword = () => {
     try {
       const response = await api.post('/forgot-password', { email });
       setMessage(response.data.message);
-      if (response.data.debug_token) {
-        setDebugToken(response.data.debug_token);
+      if (response.data.debug_code) {
+        setDebugToken(response.data.debug_code);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Une erreur est survenue.');
@@ -37,12 +37,17 @@ const ForgotPassword = () => {
         </Link>
         <h1 className="heading-1" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Mot de passe oublié ?</h1>
         <p className="text-secondary" style={{ marginBottom: '2rem' }}>
-          Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+          Entrez votre adresse email et nous vous enverrons un code pour réinitialiser votre mot de passe.
         </p>
 
         {message && (
           <div style={{ padding: '1rem', background: 'rgba(16, 185, 129, 0.1)', borderLeft: '3px solid var(--accent-primary)', color: 'var(--accent-primary)', marginBottom: '1.5rem', borderRadius: '0 var(--radius-md) var(--radius-md) 0' }}>
             {message}
+            <div style={{ marginTop: '1rem' }}>
+              <Link to={`/reset-password?email=${email}`} className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none', padding: '0.5rem 1rem', fontSize: '0.8rem' }}>
+                Entrer le code
+              </Link>
+            </div>
           </div>
         )}
 
@@ -80,7 +85,7 @@ const ForgotPassword = () => {
             style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}
             disabled={loading}
           >
-            {loading ? 'Envoi...' : 'Envoyer le lien'}
+            {loading ? 'Envoi...' : 'Envoyer le code'}
             {!loading && <Send size={18} />}
           </button>
         </form>
@@ -88,10 +93,10 @@ const ForgotPassword = () => {
         {debugToken && (
           <div style={{ marginTop: '2rem', padding: '1rem', background: 'rgba(255, 255, 255, 0.05)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--glass-border)' }}>
             <p style={{ fontSize: '0.8rem', color: 'var(--accent-secondary)', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-              [DEBUG] Lien de simulation :
+              [DEBUG] Code de simulation : <span style={{ fontSize: '1.2rem', color: 'white' }}>{debugToken}</span>
             </p>
-            <Link to={`/reset-password/${debugToken}?email=${email}`} style={{ fontSize: '0.8rem', color: 'white', wordBreak: 'break-all' }}>
-              Cliquer ici pour réinitialiser
+            <Link to={`/reset-password?email=${email}&code=${debugToken}`} style={{ fontSize: '0.8rem', color: 'white', wordBreak: 'break-all' }}>
+              Cliquer ici pour réinitialiser directement
             </Link>
           </div>
         )}
