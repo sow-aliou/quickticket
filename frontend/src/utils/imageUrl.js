@@ -1,5 +1,5 @@
 // URL de base du serveur Laravel (pour les images stockées localement)
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
 /**
  * Retourne l'URL complète d'une image d'événement.
