@@ -37,6 +37,13 @@ COPY . .
 # Installer les dépendances Composer (sans les dépendances de développement)
 RUN composer install --no-dev --optimize-autoloader
 
+# Créer les dossiers nécessaires ignorés par dockerignore
+RUN mkdir -p /var/www/html/storage/framework/cache/data \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views \
+    /var/www/html/storage/logs \
+    /var/www/html/bootstrap/cache
+
 # Gérer les permissions (très important pour que Laravel puisse écrire dans storage et cache)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
